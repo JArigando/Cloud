@@ -1,0 +1,29 @@
+import time
+import threading
+
+tasks = []  # Initialize an empty list to store tasks
+
+def add_task(name, delay):
+    """Adds a task to the scheduler."""
+    tasks.append((name, delay))
+
+def run_scheduler():
+    """Runs the task scheduler."""
+    while tasks:
+        task_name, delay = tasks.pop(0)
+        print(f"Executing task: {task_name}")
+        time.sleep(delay)  # Simulating task execution delay
+        print(f"Completed task: {task_name}")
+
+def main():
+    """Main function to add tasks and run the scheduler."""
+    add_task("Task 1", 2)
+    add_task("Task 2", 3)
+    add_task("Task 3", 1)
+    
+    scheduler_thread = threading.Thread(target=run_scheduler)
+    scheduler_thread.start()
+    scheduler_thread.join()
+
+if __name__ == "__main__":
+    main()
