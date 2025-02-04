@@ -8,8 +8,7 @@ class Main {
 
 class TaskScheduler {
     private static List<Map<String, String>> tasks = new ArrayList<>();
-
-    // Function to add a task
+    
     private static void addTask(Scanner scanner) {
         System.out.print("Enter task name: ");
         String name = scanner.nextLine();
@@ -23,8 +22,6 @@ class TaskScheduler {
         
         System.out.println("Task '" + name + "' added, scheduled at " + time + ".");
     }
-
-    // Function to run the scheduler
     private static void runScheduler() {
         if (tasks.isEmpty()) {
             System.out.println("No tasks to execute.");
