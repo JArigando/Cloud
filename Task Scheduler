@@ -1,29 +1,57 @@
-import time
-import threading
+import java.util.*;
 
-tasks = []  # Initialize an empty list to store tasks
+class Main {
+    public static void main(String[] args) {
+        TaskScheduler.run();
+    }
+}
 
-def add_task(name, delay):
-    """Adds a task to the scheduler."""
-    tasks.append((name, delay))
+class TaskScheduler {
+    private static List<Map<String, String>> tasks = new ArrayList<>();
 
-def run_scheduler():
-    """Runs the task scheduler."""
-    while tasks:
-        task_name, delay = tasks.pop(0)
-        print(f"Executing task: {task_name}")
-        time.sleep(delay)  # Simulating task execution delay
-        print(f"Completed task: {task_name}")
+    // Function to add a task
+    private static void addTask(Scanner scanner) {
+        System.out.print("Enter task name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter task time (HH:MM AM/PM): ");
+        String time = scanner.nextLine();
+        
+        Map<String, String> task = new HashMap<>();
+        task.put("name", name);
+        task.put("time", time);
+        tasks.add(task);
+        
+        System.out.println("Task '" + name + "' added, scheduled at " + time + ".");
+    }
 
-def main():
-    """Main function to add tasks and run the scheduler."""
-    add_task("Task 1", 2)
-    add_task("Task 2", 3)
-    add_task("Task 3", 1)
-    
-    scheduler_thread = threading.Thread(target=run_scheduler)
-    scheduler_thread.start()
-    scheduler_thread.join()
+    // Function to run the scheduler
+    private static void runScheduler() {
+        if (tasks.isEmpty()) {
+            System.out.println("No tasks to execute.");
+            return;
+        }
+        
+        System.out.println("Running Task Scheduler...");
+        tasks.sort(Comparator.comparing(task -> task.get("time")));
+        
+        for (Map<String, String> task : tasks) {
+            System.out.println("Executing task: " + task.get("name") + " at " + task.get("time"));
+        }
+    }
 
-if __name__ == "__main__":
-    main()
+    public static void run() {
+        Scanner scanner = new Scanner(System.in);
+        
+        while (true) {
+            addTask(scanner);
+            System.out.print("Do you want to add another task? (yes/no): ");
+            String more = scanner.nextLine();
+            if (!more.equalsIgnoreCase("yes")) {
+                break;
+            }
+        }
+        
+        runScheduler();
+        scanner.close();
+    }
+}
